@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"rsc.io/quote"
+)
 
 func main() {
 	nums := []int{2, 3, 4}
@@ -11,9 +15,9 @@ func main() {
 			fmt.Println("index:", i)
 		}
 	}
+	fmt.Println(quote.Hello())
 }
 
-
-func dummy(){
+func dummy() {
 	fmt.Println("func call")
 }
