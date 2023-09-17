@@ -1,6 +1,6 @@
 # Compile stage
 FROM golang:1.21.1-alpine3.18 AS build-env
-#ENV CGO_ENABLED 0
+ENV CGO_ENABLED 0
 WORKDIR /usr/src/app
 
 # Download and install the Delve debugger.
@@ -11,19 +11,13 @@ COPY ./sample_app/go.mod ./sample_app/go.sum ./
 RUN go mod download && go mod verify
 
 COPY ./sample_app .
-## The -gcflags "all=-N -l" flag helps us get a better debug experience
 RUN go build -gcflags "all=-N -l" -v -o /usr/local/bin/app ./...
 
 # Final stage
 FROM alpine:3.18
-# Port 8080 belongs to our application, 40000 belongs to Delve
-EXPOSE 8080 40000
+EXPOSE 8080
 WORKDIR /
 
 COPY --from=build-env /go/bin/dlv /bin/dlv
 COPY --from=build-env /usr/local/bin/app /
-
-# TODO: use env var and conditional run.sh
-# https://github.com/ccampo133/go-docker-alpine-remote-debug/blob/main/Dockerfile
-# Run delve
-CMD ["dlv", "--listen=0.0.0.0:40000", "--headless=true", "--api-version=2", "debug", "/app", "--log"]
+CMD ["/app"]
