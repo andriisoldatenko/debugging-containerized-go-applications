@@ -1,24 +1,29 @@
 # Compile stage
 FROM golang:1.21.1-alpine3.18 AS build-env
-ENV CGO_ENABLED 0
+#ENV CGO_ENABLED 0
 WORKDIR /usr/src/app
 
 # Download and install the Delve debugger.
 RUN go install github.com/go-delve/delve/cmd/dlv@v1.21.0
 
-# pre-cache go dependencies
+# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY ./sample_app/go.mod ./sample_app/go.sum ./
 RUN go mod download && go mod verify
 
 COPY ./sample_app .
+COPY docker-entrypoint.sh docker-entrypoint.sh
+
+## The -gcflags "all=-N -l" flag helps us get a better debug experience
 RUN go build -gcflags "all=-N -l" -v -o /usr/local/bin/app ./...
 
 # Final stage
 FROM alpine:3.18
-EXPOSE 8080
+# Port 8080 belongs to our application, 40000 belongs to Delve
+EXPOSE 8080 40000
 WORKDIR /
 
 COPY --from=build-env /go/bin/dlv /bin/dlv
 COPY --from=build-env /usr/local/bin/app /
-# CMD ["/app"]
-ENTRYPOINT ["/bin/sh"]
+COPY --from=build-env /usr/src/app/docker-entrypoint.sh /entrypoint
+
+ENTRYPOINT ["/entrypoint"]

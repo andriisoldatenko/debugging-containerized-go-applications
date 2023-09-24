@@ -4,7 +4,7 @@ FROM golang:1.21.1-alpine3.18 AS build-env
 WORKDIR /usr/src/app
 
 # Download and install the Delve debugger.
-RUN go install github.com/go-delve/delve/cmd/dlv@latest
+RUN go install github.com/go-delve/delve/cmd/dlv@v1.21.0
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY ./sample_app/go.mod ./sample_app/go.sum ./
@@ -24,6 +24,5 @@ COPY --from=build-env /go/bin/dlv /bin/dlv
 COPY --from=build-env /usr/local/bin/app /
 
 # TODO: use env var and conditional run.sh
-# https://github.com/ccampo133/go-docker-alpine-remote-debug/blob/main/Dockerfile
 # Run delve
-CMD ["dlv", "--listen=0.0.0.0:40000", "--headless=true", "--api-version=2", "debug", "/app", "--log"]
+CMD ["dlv", "--listen=0.0.0.0:40000", "--headless=true", "--api-version=2", "exec", "/app", "--log"]

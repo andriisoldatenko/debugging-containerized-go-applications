@@ -1,0 +1,13 @@
+13a14,15
+> COPY docker-entrypoint.sh docker-entrypoint.sh
+> 
+24a27
+> COPY --from=build-env /usr/src/app/docker-entrypoint.sh /entrypoint
+26,28c29
+< # TODO: use env var and conditional run.sh
+< # Run delve
+< CMD ["dlv", "--listen=0.0.0.0:40000", "--headless=true", "--api-version=2", "exec", "/app", "--log"]
+\ No newline at end of file
+---
+> ENTRYPOINT ["/entrypoint"]
+\ No newline at end of file

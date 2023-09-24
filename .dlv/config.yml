@@ -1,0 +1,2 @@
+substitute-path:
+  - {from: "/usr/src/app/", to: "/Users/andrii/work/debugging-containerized-go-applications/sample_app"}

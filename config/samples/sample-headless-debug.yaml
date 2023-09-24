@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-app
+  namespace: demo
+spec:
+  containers:
+    - name: sample-debug
+      image: asoldatenko/dlv-headless-envs:0.0.2
+      env:
+        - name: REMOTE_DEBUG_PORT
+          value: "40000"
+        - name: REMOTE_DEBUG_PAUSE_ON_START
+          value: "true"

@@ -9,4 +9,3 @@ spec:
       image: asoldatenko/my-golang-app:new-tag
       command: [ "/bin/sh", "-c", "--" ]
       args: [ "while true; do sleep 300; done;" ]
-
