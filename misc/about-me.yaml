@@ -1,0 +1,8 @@
+# cat ./misc/about-me.yaml
+---
+name: Andrii Soldatenko ⎈ 🇺🇦
+work: Dynatrace 🚀
+about:
+  - gopher: and OSS contributor
+  - fan: of debuggers 
+  - speaker: At many conferences

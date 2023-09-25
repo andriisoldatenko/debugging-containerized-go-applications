@@ -1,2 +1,3 @@
 substitute-path:
   - {from: "/usr/src/app/", to: "/Users/andrii/work/debugging-containerized-go-applications/sample_app"}
+  - {from: "/usr/src/app/", to: "/Users/andrii.soldatenko/work/KCD-23/debugging-containerized-go-applications/sample_app"}

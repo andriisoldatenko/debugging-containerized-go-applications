@@ -1,5 +1,4 @@
 docker build -f Dockerfile-dlv-exec -t dlv-exec .
-docker build -f Dockerfile-dlv-exec -t dlv-exec .
 / # dlv exec app
 Type 'help' for list of commands.
 (dlv) b main.main

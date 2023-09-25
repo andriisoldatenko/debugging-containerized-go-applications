@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
     - name: sample-debug
-      image: asoldatenko/dlv-headless-envs:0.0.2
+      image: asoldatenko/dlv-headless-envs:0.0.6
       env:
         - name: REMOTE_DEBUG_PORT
           value: "40000"

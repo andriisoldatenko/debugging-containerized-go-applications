@@ -2,6 +2,10 @@
 build-sample-app: ## Build docker image for sample-app
 	docker build -f Dockerfile -t asoldatenko/sample-app .
 
+podman-setup:
+	podman machine init
+	podman machine start
+
 kind-setup:
 	kind create cluster --name=debug-kind
 	kubectl create namespace demo
@@ -13,7 +17,7 @@ kind-dlv-debug:
 	kubectl exec -n demo sample-app -it -- /bin/sh
 
 kind-dlv-headless:
-	docker build -f Dockerfile-dlv-headless-envs -t asoldatenko/dlv-headless-envs:0.0.1 .
-	kind load docker-image asoldatenko/dlv-headless-envs:0.0.1 --name=debug-kind
+	docker build --platform=linux/arm64 -f Dockerfile-dlv-headless-envs -t asoldatenko/dlv-headless-envs:0.0.6 .
+	kind load docker-image asoldatenko/dlv-headless-envs:0.0.6 --name=debug-kind
 	kubectl apply -f ./config/samples/sample-headless-debug.yaml
 	kubectl exec -n demo sample-app -it -- /bin/sh

@@ -1,0 +1,16 @@
+# Compile stage
+FROM golang:1.21.1-alpine3.18 AS build-env
+ENV CGO_ENABLED 0
+WORKDIR /usr/src/app
+
+# Download and install the Delve debugger.
+RUN go install github.com/go-delve/delve/cmd/dlv@v1.21.0
+
+# pre-cache go dependencies
+COPY ./sample_app/go.mod ./sample_app/go.sum ./
+RUN go mod download && go mod verify
+
+COPY ./sample_app .
+RUN go build -gcflags "all=-N -l" -v -o /usr/local/bin/app ./...
+
+ENTRYPOINT ["/bin/sh"]
