@@ -6,7 +6,10 @@ import (
 	"rsc.io/quote"
 )
 
+var Version string
+
 func main() {
+	fmt.Printf("version is: %s\n", Version)
 	nums := []int{2, 3, 4}
 	t := dummy
 	_ = t
