@@ -31,3 +31,17 @@ kind-dlv-headless:
 	kind load docker-image asoldatenko/dlv-headless-envs:0.0.6 --name=debug-kind
 	kubectl apply -f ./config/samples/sample-headless-debug.yaml
 	kubectl exec -n demo sample-app -it -- /bin/sh
+
+demo-dlv-debug:
+	docker run --platform=linux/arm64 -it --rm dlv-debug
+
+demo-dlv-exec:
+	docker run --platform=linux/arm64 -it --rm dlv-exec
+
+demo-dlv-headless:
+	docker run \
+        --rm \
+        --platform=linux/arm64 \
+        -p 8080:8080 \
+        -p 40000:40000 \
+        dlv-headless
